@@ -17,11 +17,15 @@
     <?php
     include 'config.php';
 
-    $results = $mysqli->query("UPDATE real_estates SET address='WAS REDACTED' WHERE id=6");
-    $results = $mysqli->query("DELETE FROM real_estates WHERE id=8");
+    $set_address = 'WAS REDACTED TWISE';
+    $estate_id = 6;
 
-    if ($results) {
-        print 'Запит успішно виконаний! Запис оновлено/видалено';
+    $query = "UPDATE real_estates SET address=? WHERE id=?";
+    $statement = $mysqli->prepare($query);
+    $statement->bind_param('si', $set_address, $estate_id);
+
+    if ($statement->execute()) {
+        print 'Запит успішно виконаний! Запис оновлено';
     } else {
         print 'Помилка: (' . $mysqli->errno . ') ' . $mysqli->error;
     }
