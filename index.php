@@ -9,14 +9,15 @@
     <?php
     include 'config.php';
 
+    $estate_id = 3;
     $estate_deal_type = 'Продаж';
 
     $query = "SELECT id, address, property_type, deal_type, area, description, 
                      owner_fullname, owner_telephone, owner_email, price 
-              FROM real_estates WHERE deal_type=?";
+              FROM real_estates WHERE id=? AND deal_type=?";
     $statement = $mysqli->prepare($query);
 
-    $statement->bind_param('s', $estate_deal_type);
+    $statement->bind_param('is', $estate_id, $estate_deal_type);
     $statement->execute();
     $statement->bind_result($id, $address, $property_type, $deal_type, $area, $description,
                             $owner_fullname, $owner_telephone, $owner_email, $price);
