@@ -17,15 +17,10 @@
     <?php
     include 'config.php';
 
-    $set_address = 'WAS REDACTED TWISE';
-    $estate_id = 6;
+    $results = $mysqli->query("DELETE FROM real_estates WHERE added_timestamp >= (NOW() - INTERVAL 30 MINUTE)");
 
-    $query = "UPDATE real_estates SET address=? WHERE id=?";
-    $statement = $mysqli->prepare($query);
-    $statement->bind_param('si', $set_address, $estate_id);
-
-    if ($statement->execute()) {
-        print 'Запит успішно виконаний! Запис оновлено';
+    if ($results) {
+        print 'Запит успішно виконаний! Видалено одноденні записи';
     } else {
         print 'Помилка: (' . $mysqli->errno . ') ' . $mysqli->error;
     }
