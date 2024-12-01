@@ -9,9 +9,10 @@
     <?php
     include 'config.php';
 
-    $description = $mysqli->query("SELECT description FROM real_estates WHERE id = 2")->fetch_object()->description;
+    $results = $mysqli->query("SELECT COUNT(*) FROM real_estates");
+    $rows_count = $results->fetch_row();
 
-    print $description;
+    print $rows_count[0];
 
     $mysqli->close();
     ?>
