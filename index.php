@@ -9,37 +9,26 @@
     <?php
     include 'config.php';
 
-    $estate_id = 3;
-    $estate_deal_type = 'Продаж';
+    $estate_id = 4;
+    $estate_address = '"' . $mysqli->real_escape_string("Україна, Одеса, вул. Платанова 79, кв. 14") . '"';
+    $estate_property_type = '"' . $mysqli->real_escape_string("Квартира") . '"';
+    $estate_deal_type = '"' . $mysqli->real_escape_string("Оренда") . '"';
+    $estate_area = 30;
+    $estate_description = '"' . $mysqli->real_escape_string("Оренда квартири в Хаджибійському районі. Туалет та ванна загальна, кухня невелика, два односпальні ліжка, є бойлер.") . '"';
+    $estate_owner_fullname = '"' . $mysqli->real_escape_string("Степаненко Василь Андрійович") . '"';
+    $estate_owner_telephone = '"' . $mysqli->real_escape_string("+380589273485") . '"';
+    $estate_owner_email = '"' . $mysqli->real_escape_string("odesavanlav@gmail.com") . '"';
+    $estate_price = 5000;
 
-    $query = "SELECT id, address, property_type, deal_type, area, description, 
-                     owner_fullname, owner_telephone, owner_email, price 
-              FROM real_estates WHERE id=? AND deal_type=?";
-    $statement = $mysqli->prepare($query);
+    $insert_row = $mysqli->query("INSERT INTO real_estates (id, address, property_type, deal_type, area, description, owner_fullname, owner_telephone, owner_email, price) 
+                                         VALUES ($estate_id, $estate_address, $estate_property_type, $estate_deal_type, $estate_area, $estate_description,
+                                                 $estate_owner_fullname, $estate_owner_telephone, $estate_owner_email, $estate_price)");
 
-    $statement->bind_param('is', $estate_id, $estate_deal_type);
-    $statement->execute();
-    $statement->bind_result($id, $address, $property_type, $deal_type, $area, $description,
-                            $owner_fullname, $owner_telephone, $owner_email, $price);
-
-    print '<table border="1">';
-    while ($statement->fetch()) {
-        print '<tr>';
-        print '<td>' . $id . '</td>';
-        print '<td>' . $address . '</td>';
-        print '<td>' . $property_type . '</td>';
-        print '<td>' . $deal_type . '</td>';
-        print '<td>' . $area . '</td>';
-        print '<td>' . $description . '</td>';
-        print '<td>' . $owner_fullname . '</td>';
-        print '<td>' . $owner_telephone . '</td>';
-        print '<td>' . $owner_email . '</td>';
-        print '<td>' . $price . '</td>';
-        print '</tr>';
+    if ($insert_row) {
+        print 'Запит успішно виконаний! ID останнього вставленого запису: ' . $mysqli->insert_id . '<br />';
+    } else {
+        die('Помилка: (' . $mysqli->errno . ') ' . $mysqli->error);
     }
-    print '</table>';
-
-    $statement->close();
     ?>
 </body>
 
